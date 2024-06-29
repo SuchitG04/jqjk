@@ -137,6 +137,9 @@ $(document).ready(function () {
     $("div.pixels").each(function() {
       // console.log($(this).css("background"));
       const color = String($(this).css("background"))
+      // Console output indicated that white pixels had "background" property
+      // set to rgba(0, 0, 0, 0) ...
+      // and black pixels: rgb(0, 0, 0)
       if (color.startsWith("rgba(")) {
         pixelData.push(0);
       } else {
