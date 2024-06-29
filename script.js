@@ -14,6 +14,7 @@ $(document).ready(function () {
   const $shadeBtn = $("<button>").addClass("optionBtns").text("Shade");
   const $eraser = $("<button>").addClass("optionBtns").text("Eraser");
   const $clearBtn = $("<button>").addClass("optionBtns").text("Clear");
+  const $submitBtn = $("<button>").addClass("optionBtns").text("Submit");
 
   //input
   const $inputContainer = $("<div>").addClass("inputContainer");
@@ -24,7 +25,7 @@ $(document).ready(function () {
   const $inputBtn = $("<button>").addClass("inputBtn").text("Change size");
 
   //appending elements
-  $options.append($blackPen, $rainbowPen, $shadeBtn, $eraser, $clearBtn);
+  $options.append($blackPen, $rainbowPen, $shadeBtn, $eraser, $clearBtn, $submitBtn);
   $optAndGrid.append($options, $grid);
   $inputWrapper.append($userInputBox, $inputBtn);
   $inputContainer.append($inputWrapper);
@@ -41,6 +42,7 @@ $(document).ready(function () {
         .css({
           height: `${pixelHeight}px`,
           width: `${pixelHeight}px`,
+          opacity: "0"
         });
       $grid.append($pixel);
     }
@@ -116,7 +118,7 @@ $(document).ready(function () {
   $clearBtn.on("click", function () {
     $(".pixels").css({
       background: "none",
-      opacity: "1",
+      opacity: "0",
     });
     staticColorEffect();
   });
@@ -128,6 +130,27 @@ $(document).ready(function () {
   $shadeBtn.on("click", function () {
     shadeEffect();
   });
+
+  $submitBtn.on("click", function() {
+    const pixelData = [];
+    $("div.pixels").each(function() {
+      const opacity = Number($(this).css("opacity"));
+      pixelData.push(opacity > 0 ? opacity : 0);
+      $(this).css({opacity: "0"});
+    });
+    console.log(pixelData);
+  });
+  
+  // This is better code. Uttam js pro pls make it work
+  // $submitBtn.on("click", function() {
+  //   const pixelData = [];
+  //   $("div.pixels").each(function() {
+  //     const color = $(this).css("background") == "black" ? 1 : 0;
+  //     pixelData.push(color);
+  //   });
+  //   console.log(pixelData)
+  // });
+
 
   const $footer = $("<div>")
     .addClass("footer")
