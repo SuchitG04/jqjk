@@ -8,10 +8,8 @@ $(document).ready(function () {
   const $grid = $("<div>").addClass("grid");
 
   //options(to change the colors of our pen(or paint brush whatever))
-  let color = "black"; //default color
   const $blackPen = $("<button>").addClass("optionBtns").text("Black");
   const $rainbowPen = $("<button>").addClass("optionBtns").text("Rainbow");
-  const $shadeBtn = $("<button>").addClass("optionBtns").text("Shade");
   const $eraser = $("<button>").addClass("optionBtns").text("Eraser");
   const $clearBtn = $("<button>").addClass("optionBtns").text("Clear");
   const $submitBtn = $("<button>").addClass("optionBtns").text("Submit");
@@ -25,7 +23,7 @@ $(document).ready(function () {
   const $inputBtn = $("<button>").addClass("inputBtn").text("Change size");
 
   //appending elements
-  $options.append($blackPen, $rainbowPen, $shadeBtn, $eraser, $clearBtn, $submitBtn);
+  $options.append($blackPen, $rainbowPen, $eraser, $clearBtn, $submitBtn);
   $optAndGrid.append($options, $grid);
   $inputWrapper.append($userInputBox, $inputBtn);
   $inputContainer.append($inputWrapper);
@@ -33,7 +31,12 @@ $(document).ready(function () {
   $body.append($container);
 
   //functions
+  let mouseDown = false;
+  document.body.onmousedown = () => (mouseDown = true);
+  document.body.onmouseup = () => (mouseDown = false);
+
   function addPixels(dimensions) {
+    $grid.empty();
     const pixelHeight = 460 / dimensions;
 
     for (let i = 0; i < dimensions * dimensions; i++) {
@@ -42,101 +45,67 @@ $(document).ready(function () {
         .css({
           height: `${pixelHeight}px`,
           width: `${pixelHeight}px`,
-          opacity: "1"
         });
       $grid.append($pixel);
     }
-    staticColorEffect();
+    $grid.on("mouseover mousedown", ".pixels", changeColor);
   }
 
-  function removePixels() {
-    $(".pixels").remove();
+  let currentMode = "black"; //default mode
+  function changeColor(e) {
+    if (e.type === "mouseover" && !mouseDown) return;
+    if (currentMode === "rainbow") {
+      const randomR = Math.floor(Math.random() * 256);
+      const randomG = Math.floor(Math.random() * 256);
+      const randomB = Math.floor(Math.random() * 256);
+      e.target.style.backgroundColor = `rgb(${randomR}, ${randomG}, ${randomB})`;
+    } else if (currentMode === "black") {
+      e.target.style.backgroundColor = "#000";
+    } else if (currentMode === "eraser") {
+      e.target.style.backgroundColor = "#fefefe";
+    }
   }
 
-  function staticColorEffect() {
-    $(".pixels").on("dragenter mousedown", function () {
-      $(this).css({
-        background: color,
-        opacity: "1",
-      });
+  function clearScreen() {
+    $(".pixels").css({
+      background: "none",
     });
   }
-
-  function rainbowEffect() {
-    const colors = [
-      "rebeccapurple",
-      "lightblue",
-      "blue",
-      "green",
-      "yellow",
-      "orange",
-      "red",
-    ];
-    $(".pixels").on("dragenter mousedown", function () {
-      const randomIndex = Math.floor(Math.random() * colors.length);
-      $(this).css({
-        background: colors[randomIndex],
-        opacity: "1",
-      });
-    });
-  }
-
-  function shadeEffect() {
-    $(".pixels").each(function () {
-      let density = 0;
-      $(this).on("dragenter mousedown", function () {
-        density += 0.1;
-        $(this).css("opacity", density);
-      });
-    });
-  }
-
-  addPixels(16); //default grid
 
   //Event listeners
   $inputBtn.on("click", function () {
     const userInput = Number($userInputBox.val());
 
     if (userInput > 0 && userInput <= 100) {
-      removePixels();
       addPixels(userInput);
     } else {
       alert("ERROR: Input a number between 1 and 100");
+      //TODO: display the error more nicely
     }
   });
 
   $blackPen.on("click", function () {
-    staticColorEffect();
-    color = "black";
+    currentMode = "black";
   });
 
   $eraser.on("click", function () {
-    staticColorEffect();
-    color = "none";
+    currentMode = "eraser";
   });
 
   $clearBtn.on("click", function () {
-    $(".pixels").css({
-      background: "none",
-      opacity: "1",
-    });
-    staticColorEffect();
+    clearScreen();
   });
 
   $rainbowPen.on("click", function () {
-    rainbowEffect();
-  });
-
-  $shadeBtn.on("click", function () {
-    shadeEffect();
+    currentMode = "rainbow";
   });
 
   // Records input as array of 1s and 0s. 1s indicate selected pixel
-  $submitBtn.on("click", function() {
+  $submitBtn.on("click", function () {
     const pixelData = [];
-    $("div.pixels").each(function() {
+    $("div.pixels").each(function () {
       // console.log($(this).css("background"));
-      const color = String($(this).css("background"))
+      const color = String($(this).css("background"));
       // Console output indicated that white pixels had "background" property
       // set to rgba(0, 0, 0, 0) ...
       // and black pixels: rgb(0, 0, 0)
@@ -146,13 +115,8 @@ $(document).ready(function () {
         pixelData.push(1);
       }
     });
-    console.log(pixelData)
+    console.log(pixelData);
   });
 
-
-  const $footer = $("<div>")
-    .addClass("footer")
-    .html(
-      'Photo by <a href="https://unsplash.com/@pbernardon?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pascal Bernardon</a> on <a href="https://unsplash.com/photos/illustration-of-marvels-avengers-zWHZ_QsU4rc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>'
-    );
+  addPixels(16); //default grid
 });
