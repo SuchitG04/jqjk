@@ -42,7 +42,7 @@ $(document).ready(function () {
         .css({
           height: `${pixelHeight}px`,
           width: `${pixelHeight}px`,
-          opacity: "0"
+          opacity: "1"
         });
       $grid.append($pixel);
     }
@@ -118,7 +118,7 @@ $(document).ready(function () {
   $clearBtn.on("click", function () {
     $(".pixels").css({
       background: "none",
-      opacity: "0",
+      opacity: "1",
     });
     staticColorEffect();
   });
@@ -131,25 +131,20 @@ $(document).ready(function () {
     shadeEffect();
   });
 
+  // Records input as array of 1s and 0s. 1s indicate selected pixel
   $submitBtn.on("click", function() {
     const pixelData = [];
     $("div.pixels").each(function() {
-      const opacity = Number($(this).css("opacity"));
-      pixelData.push(opacity > 0 ? opacity : 0);
-      $(this).css({opacity: "0"});
+      // console.log($(this).css("background"));
+      const color = String($(this).css("background"))
+      if (color.startsWith("rgba(")) {
+        pixelData.push(0);
+      } else {
+        pixelData.push(1);
+      }
     });
-    console.log(pixelData);
+    console.log(pixelData)
   });
-  
-  // This is better code. Uttam js pro pls make it work
-  // $submitBtn.on("click", function() {
-  //   const pixelData = [];
-  //   $("div.pixels").each(function() {
-  //     const color = $(this).css("background") == "black" ? 1 : 0;
-  //     pixelData.push(color);
-  //   });
-  //   console.log(pixelData)
-  // });
 
 
   const $footer = $("<div>")
