@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Roboto";
+  src: url(./fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Roboto-Bold";
+  src: url(./fonts/Roboto-Bold.ttf);
+}
+
 body {
   height: 100vh;
   margin: 0px;
@@ -5,60 +15,76 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: Roboto;
 }
 
 h1 {
   color: black;
   padding: 8px;
-  border-radius: 12px;
-  font-family: pixelFont;
-  font-size: 62px;
-  border: 2px solid black;
+  font-size: 4rem;
+  font-family: Roboto-Bold;
 }
 
 .container {
-  font-family: lora;
-  font-size: 16px;
+  font-size: 1rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px solid black;
-  border-radius: 12px;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .optAndGrid {
   display: flex;
-  border-bottom: 2px solid black;
-  padding: 20px 20px 20px 0px;
+  padding: 1rem 1rem 1rem 0;
 }
 
 .options {
-  padding: 20px;
+  padding: 2rem;
   flex: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 }
 
 .optionBtns {
-  font-size: 16px;
-  min-width: 75px;
+  font-size: 1rem;
+  width: 100%;
   font-family: inherit;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+  background-color: white;
+  outline: none;
+  border: 1px solid black;
+  border-radius: 0.2rem;
+}
+
+.optionBtns:hover {
+  transform: scale(1.05);
+}
+
+.optionBtns:active {
+  transform: scale(1);
+  transition: transform 0.05s ease-in-out;
 }
 
 .grid {
-  max-height: 464px;
+  max-height: 464px; /*hardcoded for simplicity*/
   max-width: 464px;
   display: flex;
   flex-wrap: wrap;
   box-sizing: border-box;
-  border: 2px solid black;
+  border: 1px solid black;
+  border-radius: 0.3rem;
 }
 
 .pixels {
-  border: 1px solid #b1aaaa;
   box-sizing: border-box;
 }
 
@@ -67,26 +93,32 @@ h1 {
   justify-content: center;
   align-items: center;
   flex: auto;
-  padding: 10px;
+  padding: 0.8rem;
 }
 
 .inputWrapper {
   display: flex;
+  border: 1px solid black;
+  border-radius: 0.2rem;
 }
 
 input[type="number"] {
   padding: 5px 10px;
-  width: 35px;
-  font-size: 16px;
+  width: 6rem;
+  font-size: 1rem;
+  border: none;
+  border-right: 1px solid black;
 }
 
 .inputBtn {
-  border-radius: 0px;
-  border: 1px solid black;
+  font-size: 1rem;
   cursor: pointer;
   font-family: inherit;
+  background-color: white;
+  outline: none;
+  border: none;
 }
 
 .inputBtn:hover {
-  background-color: rgb(163, 160, 160);
+  background-color: #eee;
 }
