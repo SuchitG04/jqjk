@@ -62,7 +62,7 @@ $(document).ready(function () {
     } else if (currentMode === "black") {
       e.target.style.backgroundColor = "#000";
     } else if (currentMode === "eraser") {
-      e.target.style.backgroundColor = "#fefefe";
+      e.target.style.background = "none";
     }
   }
 
