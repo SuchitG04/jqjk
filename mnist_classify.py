@@ -2,11 +2,19 @@ import torch
 import pickle
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 with open("mnist_net.pkl", "rb") as f:
     nnet = pickle.load(f)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5500"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/classify")
 async def classify_digit(digit_array: list[int]):
