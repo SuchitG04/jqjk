@@ -104,7 +104,7 @@ $(document).ready(function () {
       data: "[" + pixelData.toString() + "]",
       contentType: "application/json",
       success: function (response) {
-        console.log(response);
+        alert("Number: " + response);
       },
       error: function (err) {
         console.log("Error");
