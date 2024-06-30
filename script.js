@@ -93,19 +93,22 @@ $(document).ready(function () {
       }
     });
 
-    const number = getNumber(pixelData);
-    console.log(number);
+    getNumber(pixelData);
   });
 
   //function to post pixelData to the server and get a number as a response
   const getNumber = (pixelData) => {
     $.ajax({
       type: "POST",
-      url: "http://127.0.0.1:8000",
-      data: JSON.stringify(pixelData),
+      url: "http://127.0.0.1:8000/classify",
+      data: JSON.stringify({ digit_array: pixelData }),
       contentType: "application/json",
       success: function (response) {
-        return response;
+        console.log(response);
+      },
+      error: function (err) {
+        console.log("Error");
+        console.log(err);
       },
     });
   };
