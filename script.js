@@ -101,7 +101,7 @@ $(document).ready(function () {
     $.ajax({
       type: "POST",
       url: "http://127.0.0.1:8000/classify",
-      data: JSON.stringify({ digit_array: pixelData }),
+      data: "[" + pixelData.toString() + "]",
       contentType: "application/json",
       success: function (response) {
         console.log(response);
