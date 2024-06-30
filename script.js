@@ -1,33 +1,21 @@
 $(document).ready(function () {
   const $body = $("body");
-  const $container = $("<div>").addClass("container");
 
   //viewport
-  const $optAndGrid = $("<div>").addClass("optAndGrid");
+  const $container = $("<div>").addClass("container");
   const $options = $("<div>").addClass("options");
   const $grid = $("<div>").addClass("grid");
 
   //options(to change the colors of our pen(or paint brush whatever))
-  const $blackPen = $("<button>").addClass("optionBtns").text("Black");
-  const $rainbowPen = $("<button>").addClass("optionBtns").text("Rainbow");
-  const $eraser = $("<button>").addClass("optionBtns").text("Eraser");
-  const $clearBtn = $("<button>").addClass("optionBtns").text("Clear");
-  const $submitBtn = $("<button>").addClass("optionBtns").text("Submit");
-
-  //input
-  const $inputContainer = $("<div>").addClass("inputContainer");
-  const $inputWrapper = $("<div>").addClass("inputWrapper");
-  const $userInputBox = $("<input>")
-    .attr("type", "number")
-    .attr("id", "userInput");
-  const $inputBtn = $("<button>").addClass("inputBtn").text("Change size");
+  const $blackPen = $("<button>").addClass("optionBtns").text("BLACK");
+  const $rainbowPen = $("<button>").addClass("optionBtns").text("RAINBOW");
+  const $eraser = $("<button>").addClass("optionBtns").text("ERASER");
+  const $clearBtn = $("<button>").addClass("optionBtns").text("CLEAR");
+  const $submitBtn = $("<button>").addClass("optionBtns").text("SUBMIT");
 
   //appending elements
   $options.append($blackPen, $rainbowPen, $eraser, $clearBtn, $submitBtn);
-  $optAndGrid.append($options, $grid);
-  $inputWrapper.append($userInputBox, $inputBtn);
-  $inputContainer.append($inputWrapper);
-  $container.append($optAndGrid, $inputContainer);
+  $container.append($options, $grid);
   $body.append($container);
 
   //functions
@@ -37,7 +25,7 @@ $(document).ready(function () {
 
   function addPixels(dimensions) {
     $grid.empty();
-    const pixelHeight = 460 / dimensions;
+    const pixelHeight = 400 / dimensions;
 
     for (let i = 0; i < dimensions * dimensions; i++) {
       const $pixel = $("<div>")
@@ -73,17 +61,6 @@ $(document).ready(function () {
   }
 
   //Event listeners
-  $inputBtn.on("click", function () {
-    const userInput = Number($userInputBox.val());
-
-    if (userInput > 0 && userInput <= 100) {
-      addPixels(userInput);
-    } else {
-      alert("ERROR: Input a number between 1 and 100");
-      //TODO: display the error more nicely
-    }
-  });
-
   $blackPen.on("click", function () {
     currentMode = "black";
   });
@@ -115,8 +92,23 @@ $(document).ready(function () {
         pixelData.push(1);
       }
     });
-    console.log(pixelData);
+
+    const number = getNumber(pixelData);
+    console.log(number);
   });
 
-  addPixels(16); //default grid
+  //function to post pixelData to the server and get a number as a response
+  const getNumber = (pixelData) => {
+    $.ajax({
+      type: "POST",
+      url: "http://127.0.0.1:8000",
+      data: JSON.stringify(pixelData),
+      contentType: "application/json",
+      success: function (response) {
+        return response;
+      },
+    });
+  };
+
+  addPixels(28); //default grid
 });
