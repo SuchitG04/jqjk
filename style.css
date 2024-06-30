@@ -86,6 +86,7 @@ h1 {
 
 .pixels {
   box-sizing: border-box;
+  user-select: none;
 }
 
 .inputContainer {
